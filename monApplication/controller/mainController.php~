@@ -1,0 +1,104 @@
+<?php
+
+class mainController
+{
+
+	public static function helloWorld($request,$context)
+	{
+		$context->mavariable="hello world";
+		$context->notification="C'est une notif";
+		return context::SUCCESS;
+	}
+
+
+	public static function index($request,$context){
+		
+		return context::SUCCESS;
+	}
+
+	public static function superTest($request, $context)
+	{
+		// Vérification si les paramétres existent
+		if (isset($request['param1']) && isset($request['param2'])) {
+			// Construire le message en utilisant les paramétres du tableau $request
+			$message = "j'ai compris {$request['param1']}, super : {$request['param2']}";
+			// Affectez le message au contexte pour l'affichage
+			$context->mavariable = $message;
+		} else {
+			// Gérez le cas ou les parametres sont manquants
+			$context->mavariable = "Les paramétres param1 et param2 sont manquants.";
+		}
+
+		return context::SUCCESS;
+	}
+
+
+	public static function testUtilisateur($request, $context)
+{
+    // Test de la classe utilisateur
+    $context->user = utilisateurTable::getUserById(4);
+
+     return context::SUCCESS;
+}
+
+  	public static function testTrajet($request, $context)
+{
+    // Test de la classe trajet
+    $context->trajet = trajetTable::getTrajet("Paris", "Lille");
+
+   	return context::SUCCESS;
+}
+
+
+    public static function testVoyage($request, $context)
+{
+    // Test de la classe voyage
+    $context->trajet = trajetTable::getTrajet("Paris", "Lyon");
+    $context->voyages = voyageTable::getVoyagesByTrajet($context->trajet);
+
+    return context::SUCCESS;
+}
+
+    public static function testReservation($request, $context)
+{
+    // Test de la classe reservation
+    $context->voyage = voyageTable::getVoyagesByTrajet(355); 
+    $context->reservations = reservationTable::getReservationByVoyage($context->voyage);
+  
+    return context::SUCCESS;
+}
+
+    public static function testVoyages($request, $context)
+{
+    // Vérifier si les indices sont définis dans $_POST
+    if (isset($_POST['ndepart']) && isset($_POST['narriv'])) {
+        $dep = $_POST['ndepart'];
+        $arr = $_POST['narriv'];
+
+        // Récupérer les trajets correspondants
+        $context->trajets = trajetTable::getTrajet("$dep", "$arr");
+
+        // Vérifier si des trajets ont été trouvés
+        if ($context->trajets) {
+            // Récupérer les voyages correspondants aux trajets
+            $context->voyages = voyageTable::getVoyagesByTrajet($context->trajets->id);
+        } else {
+            // Aucun trajet trouvé, vous pouvez gérer cela en conséquence
+            $context->mavariable = "Aucun trajet trouvé pour les villes spécifiées.";
+        }
+    } else {
+        // Les indices ne sont pas définis dans $_POST
+        $context->mavariable = "Les indices ndepart et narriv ne sont pas définis dans \$_POST.";
+    }
+
+    return context::SUCCESS;
+}
+
+
+
+
+
+
+
+
+}

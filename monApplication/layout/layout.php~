@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <title>Ton appli !</title>
+
+</head>
+
+<body>
+    <h2>Super c'est ton appli !</h2>
+    <?php if ($context->getSessionAttribute('user_id')): ?>
+        <?php echo $context->getSessionAttribute('user_id') . " est connecté"; ?>
+    <?php endif; ?>
+
+    <div id="page" class="container">
+        <div id="banner">
+            <?php echo "action : " . $action; ?>
+        </div>
+
+        <div id="page_maincontent">
+            <div class="container">
+                <div id="resform">
+                    <form id="formulaire" method="post" action="">
+                        <div class="mb-3">
+                            <label for="depart" class="form-label">Ville de départ :</label>
+                            <input type="text" class="form-control" id="depart" name="depart">
+                        </div>
+                        <div class="mb-3">
+                            <label for="arrivee" class="form-label">Ville d'arrivée :</label>
+                            <input type="text" class="form-control" id="arrivee" name="arrivee">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nbplace" class="form-label">Nombre de places :</label>
+                            <input type="text" class="form-control" id="nbplace" name="nbplace">
+                        </div>
+                         <button type="button" id="submitBtn" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <?php include($template_view); ?>
+
+            <div id="divAffichageResultatCompte"></div>
+            <div id="divAffichageResultat"></div>
+            <div id="divAffichageResultatProfil"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+// Fonction déclenchée lors du clic sur le bouton de recherche
+function loadDoc() {
+    var depart = $("#depart").val();
+    var arrivee = $("#arrivee").val();
+
+    // Vérification des champs de villes
+    if (!depart ) {
+        $("#bandeauVoyage").text("ⓘ Veuillez remplir la ville de depart.");
+        $("#rechercheVoyageResultat").html("");
+        return;
+    }
+
+    if (!arrivee ) {
+        $("#bandeauVoyage").text("ⓘ Veuillez remplir la ville d'arrivee.");
+        $("#rechercheVoyageResultat").html("");
+        return;
+    }
+    
+    // Requête AJAX pour chercher des voyages en utilisant monApplicationajax
+    $.ajax({
+        url: "https://pedago.univ-avignon.fr/~uapv2000019/CeriCarProjet/squelette_L3/monApplicationAjax.php",
+        method: "GET", // Utilisation de la méthode GET
+        data: {
+            action: "rechercheVoyage",
+            depart: depart,
+            arrivee: arrivee
+        },
+        success: function(response) {
+            // Gestion de la réponse
+            if (response.includes("Aucun voyage trouvé pour le trajet .")) {
+                $("#bandeauVoyage").text("ⓘ Aucun voyage trouvé");
+                $("#rechercheVoyageResultat").empty();
+            } else {
+                $("#rechercheVoyageResultat").html(response);
+                $("#bandeauVoyage").text("ⓘ Recherche terminée");
+            }
+        },
+       
+    });
+}
